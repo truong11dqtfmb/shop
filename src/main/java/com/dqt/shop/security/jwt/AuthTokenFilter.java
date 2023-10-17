@@ -35,7 +35,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
-            if (request.getServletPath().contains(Constant.URL_AUTH) || request.getServletPath().contains(Constant.URL_SWAGGER) || request.getServletPath().contains(Constant.URL_API_DOC)) {
+            if (request.getServletPath().contains(Constant.URL_AUTH) || request.getServletPath().contains(Constant.URL_SWAGGER) || request.getServletPath().contains(Constant.URL_API_DOC) || request.getServletPath().contains(Constant.URL_SOCKET) || request.getServletPath().equals("/")) {
                 filterChain.doFilter(request, response);
                 return;
             }

@@ -15,6 +15,7 @@ public class Constant {
     public static final String URL_AUTH = "/api/auth";
     public static final String URL_SWAGGER = "/swagger-ui/";
     public static final String URL_API_DOC = "/v3/api-docs";
+    public static final String URL_SOCKET = "/websocket";
 
 
 

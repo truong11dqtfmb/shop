@@ -1,0 +1,80 @@
+<html>
+<head>
+    <title>Chat WebSocket</title>
+    <script type="text/javascript" src="https://unpkg.com/kd-shim-sockjs-client@0.3.4/sockjs-0.3.4.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"
+            integrity="sha512-tL4PIUsPy+Rks1go4kQG8M8/ItpRMvKnbBjQm4d2DQnFwgcBYRRN00QdyQnWSCwNMsoY/MfJY8nHp2CzlNdtZA=="
+            crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        var stompClient1 = null;
+
+        function setConnected(connected) {
+            document.getElementById('connect').disabled = connected;
+            document.getElementById('disconnect').disabled = !connected;
+            document.getElementById('conversationDiv').style.visibility
+                = connected ? 'visible' : 'hidden';
+            document.getElementById('response').innerHTML = '';
+        }
+
+        function connect() {
+            var socket1 = new SockJS('http://localhost:8008/websocket');
+            // var socket1 = new SockJS('http://localhost:8888/websocket');
+            // var socket1 = new SockJS('/websocket');
+            stompClient1 = Stomp.over(socket1);
+            stompClient1.connect({}, function (frame) {
+                console.log('Connected to websocket oke nha ae!')
+
+            })
+
+        }
+
+        function disconnect() {
+            if (stompClient1 != null) {
+                console.log("pre disconnect");
+                stompClient1.disconnect(function () {
+                    console.log("Disconnected");
+                });
+            }
+            setConnected(false);
+        }
+
+        // function sendMessage() {
+        //     var from = document.getElementById('from').value;
+        //     var text = document.getElementById('text').value;
+        //     stompClient1.send("/app/chat", {},
+        //         JSON.stringify({'from': from, 'text': text}));
+        // }
+
+        function showMessageOutput(messageOutput) {
+            var response = document.getElementById('response');
+            var p = document.createElement('p');
+            p.style.wordWrap = 'break-word';
+            p.appendChild(document.createTextNode(messageOutput.from + ": "
+                + messageOutput.text + " (" + messageOutput.time + ")"));
+            response.appendChild(p);
+        }
+    </script>
+</head>
+<body onload="disconnect()">
+<div>
+    <div>
+        <input type="text" id="from" placeholder="Choose a nickname"/>
+        <input type="text" id="locale" placeholder="Write a locale.."/>
+    </div>
+    <br/>
+    <div>
+        <button id="connect" onclick="connect();">Connect</button>
+        <button id="disconnect" onclick="disconnect();">
+            Disconnect
+        </button>
+    </div>
+    <br/>
+    <div id="conversationDiv">
+        <!--        <input type="text" id="locale" placeholder="Write a locale..."/>-->
+        <button id="sendMessage" onclick="sendMessage();">Send</button>
+        <p id="response"></p>
+    </div>
+</div>
+
+</body>
+</html>
