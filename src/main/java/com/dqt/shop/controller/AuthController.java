@@ -9,6 +9,7 @@ import com.dqt.shop.dto.response.TokenRefreshResponse;
 import com.dqt.shop.entity.RefreshToken;
 import com.dqt.shop.entity.User;
 import com.dqt.shop.exception.TokenRefreshException;
+import com.dqt.shop.log.EnableRestCallLogs;
 import com.dqt.shop.repository.UserRepository;
 import com.dqt.shop.security.jwt.JwtUtils;
 import com.dqt.shop.security.service.UserDetailsImpl;
@@ -62,6 +63,7 @@ public class AuthController {
     }
 
     @PostMapping("login")
+    @EnableRestCallLogs
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginUser){
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginUser.getEmail(),loginUser.getPassword()));
